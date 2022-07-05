@@ -25,4 +25,15 @@ public class AppTest {
         int rs=Calculator.run("10 * 5");
         assertEquals(50,rs);
     }
+
+    @Test
+    public void 세자리문자_더하기(){
+        int rs=Calculator.run("10 + 1 + 2");
+        assertEquals(13,rs);
+    }
+    @Test
+    public void 세자리문자_빼기(){
+        int rs=Calculator.run("10 - 1 - 2");
+        assertEquals(7,rs);
+    }
 }
