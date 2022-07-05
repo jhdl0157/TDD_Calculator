@@ -46,4 +46,9 @@ public class AppTest {
         int rs=Calculator.run("10 * 1 * 2");
         assertEquals(20,rs);
     }
+    @Test
+    public void 세자리문자_나눗셈(){
+        int rs=Calculator.run("21 / 1 / 3");
+        assertEquals(7,rs);
+    }
 }
