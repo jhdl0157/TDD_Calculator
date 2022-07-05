@@ -1,36 +1,58 @@
 package com.ll.exam;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Calculator {
     public static void main(String[] args) {
+       run("1 * 2 + 3");
     }
     public static int run(String str){
-        List<Character> op=Arrays.asList('+','-','*','/');
-        Stack<Integer> stack=new Stack<>();
+        Stack<String> stack=new Stack<>();
+        Stack<Integer> numberStack=new Stack<>();
         List<String> splits= Arrays.stream(str.split(" ")).toList();
+        List<String> result=new ArrayList<>();
 
-        List<Integer> numbers= splits.stream()
-                .filter(x -> x.matches("^[0-9]+$"))
-                .map(Integer::parseInt)
-                .toList();
-
-
-        if(str.contains("-")){
-            return numbers.stream().reduce((x,y)->x-y).orElse(-1);
-        }
-        if(str.contains("*")){
-            return numbers.stream().reduce(1,(x,y)->x*y);
-        }
-        if(str.contains("/")){
-            return numbers.stream().reduce((x,y)->x/y).orElse(-1);
-        }
-        int sum=numbers.stream().reduce(0,Integer::sum);
-        return sum;
-
+         for(String s:splits){
+             if(s.matches("^[0-9]+$")){
+                 numberStack.push(Integer.parseInt(s));
+                 continue;
+             }
+             if(stack.isEmpty()) {
+                 stack.push(s);
+                 continue;
+             }
+             if(stack.peek().equals("+")||stack.peek().equals("-")){
+                 if(s.equals("*")||s.equals("/")){
+                     String s1=stack.peek();
+                     stack.pop();
+                     stack.push(s);
+                     stack.push(s1);
+                 }
+             }else{
+                 stack.push(s);
+             }
+         }
+        result.addAll(stack);
+        System.out.println("NumberStack : "+numberStack);
+        System.out.println("Op "+result);
+        Loop1 :
+       while(true){
+           if(numberStack.size()==1) break;
+           int n1=numberStack.peek();
+           numberStack.pop();
+           int n2=numberStack.peek();
+           numberStack.pop();
+           for(String s:result){
+               switch (s){
+                   case("+") : numberStack.push(n1+n2); result.remove(s); continue Loop1;
+                   case("-") : numberStack.push(n1-n2); result.remove(s); continue Loop1;
+                   case("*") : numberStack.push(n1*n2); result.remove(s); continue Loop1;
+                   //case("/") : numberStack.push(n1/n2);
+               }
+           }
+       }
+        System.out.println(numberStack.peek());
+        return numberStack.peek();
     }
 }
