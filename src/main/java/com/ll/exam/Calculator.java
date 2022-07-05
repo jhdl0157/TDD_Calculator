@@ -20,11 +20,14 @@ public class Calculator {
                 .toList();
 
 
-        if(str.contains(" - ")){
-            return numbers.stream().reduce((x,y)->x-y).orElse(0);
+        if(str.contains("-")){
+            return numbers.stream().reduce((x,y)->x-y).orElse(-1);
         }
         if(str.contains("*")){
             return numbers.stream().reduce(1,(x,y)->x*y);
+        }
+        if(str.contains("/")){
+            return numbers.stream().reduce((x,y)->x/y).orElse(-1);
         }
         int sum=numbers.stream().reduce(0,Integer::sum);
         return sum;
